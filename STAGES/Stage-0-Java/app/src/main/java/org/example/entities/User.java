@@ -1,14 +1,18 @@
 package org.example.entities;
 import java.util.List;
+import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
     private String name;
     private String password;
     private String hashPassword;
     List<Ticket>  ticketsBooked;
+    @JsonProperty("UUID")
     private String UUID; 
 
-    public User(String name, String password, String hashPassword, List<Ticket> tickets, String UUID) {
+    public User(String name, String password, String hashPassword, List<Ticket> ticketsBooked, String UUID) {
         this.name = name;
         this.password = password;
         this.hashPassword = hashPassword;
@@ -16,7 +20,9 @@ public class User {
         this.UUID = UUID;
     }
     public User()
-    {}
+    {
+        ticketsBooked = new ArrayList<>();
+    }
     public String getName() {
         return name;
     }
@@ -47,8 +53,13 @@ public class User {
     public void setUUID(String UUID) {
         this.UUID = UUID;
     }
-    public void printTickets()
+    @JsonIgnore
+    public void printTickets(String name)
     {
+         if(ticketsBooked.size()==0 || ticketsBooked==null)
+         {   System.out.println("No tickets booked.");
+             return;
+            } 
         for(int i=0;i<ticketsBooked.size();i++)
         {
             System.out.println(ticketsBooked.get(i).getTicketInfo());

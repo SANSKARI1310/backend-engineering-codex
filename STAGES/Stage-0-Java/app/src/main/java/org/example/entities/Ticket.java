@@ -1,5 +1,7 @@
 package org.example.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Ticket {
     private String ticketId;
     private String source;
@@ -45,6 +47,7 @@ public class Ticket {
     public void setDate(String date) {
         this.date = date;   
     }
+    @JsonIgnore
     public String getTicketInfo()
     {
         return "Ticket ID: "+ticketId+" Source: "+source+" Destination: "+destination+" Train No: "+train.getTrainNo()+" Date: "+date;

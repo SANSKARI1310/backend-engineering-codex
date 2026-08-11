@@ -1,17 +1,18 @@
 package org.example.services;
-import org.example.entities.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import org.example.util.userServiceutil;
-import org.example.entities.Ticket;
-import org.example.services.TrainService;
-import org.example.entities.Train;
-import java.time.LocalDateTime;
 import java.util.UUID;
+
+import org.example.entities.Ticket;
+import org.example.entities.Train;
+import org.example.entities.User;
+import org.example.util.userServiceutil;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 public class UserBookingService {
     private User user;
     private static final String USER_PATH ="app/src/main/java/LocalDB/users.json";
@@ -28,12 +29,19 @@ public class UserBookingService {
         File userFile = new File(USER_PATH);
         userLists = objectMapper.readValue(userFile, new TypeReference<List<User>>() {});
     }
-    public Boolean loginUser()
+    public User loginUser(String username, String password)
     {
-        Optional<User> foundUser = userLists.stream().filter(
-            user1-> user1.getName().equalsIgnoreCase(user.getName()) 
-            && userServiceutil.checkPassword(user1.getPassword(), user.getPassword())).findFirst();
-        return foundUser.isPresent();
+        Optional<User> foundUser = userLists.stream()
+        .filter(user ->
+            user.getName().equalsIgnoreCase(username)
+            && userServiceutil.checkPassword(
+                password,
+                user.getHashPassword()
+            )
+        )
+        .findFirst();
+
+    return foundUser.orElse(null);
     }
     public Boolean signUp(User newUser)
     {
@@ -54,7 +62,8 @@ public class UserBookingService {
     }
     public void fetchBooking()
     {
-        user.printTickets();
+        System.out.println(user.getTicketsBooked().size());
+        user.printTickets(user.getName());
     }
     public Boolean cancelBooking(String ticketId)
     {
@@ -94,7 +103,7 @@ public class UserBookingService {
             for(Train train : trains)
             {
                 System.out.println("Train " + count + ":");
-                train.getTrainInfo();
+                train.trainInfo();
                 count++;
             }
         }

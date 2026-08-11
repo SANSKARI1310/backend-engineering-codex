@@ -2,6 +2,8 @@ package org.example.entities;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Train {
     private String trainId;
     private String trainNo;
@@ -48,7 +50,8 @@ public class Train {
     public void setStations(List<String> stations) {
         this.stations = stations;
     }
-    public int getSeatCount() {
+    @JsonIgnore
+    public int seatCount() {
         int count = 0;
         for (List<Boolean> row : seatAvailability) {
             for (Boolean seat : row) {
@@ -59,7 +62,8 @@ public class Train {
         }
         return count;
     }
-    public void getTrainInfo()
+    @JsonIgnore
+    public void trainInfo()
     {
         System.out.println("Train ID: "+trainId+" Train No: "+trainNo);
         System.out.println("Train Schedule: ");
@@ -72,7 +76,7 @@ public class Train {
         {
             System.out.println(stations.get(i));
         }
-        System.out.println("Seat Availability: "+ getSeatCount());
+        System.out.println("Seat Availability: "+ seatCount());
     }
     
 

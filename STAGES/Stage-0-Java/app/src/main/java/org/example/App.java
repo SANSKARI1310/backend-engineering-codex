@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.example.entities.User;
 import org.example.util.userServiceutil;
 import org.example.services.UserBookingService;
-
+import java.io.IOException;
 public class App {
 
     public static void main(String[] args) {
@@ -26,7 +26,8 @@ public class App {
             scanner.close();
             return;
         }
-        while(option!=6)
+        User loginUser = null;
+        while(option!=7)
         {
             System.out.println("1. Login");
             System.out.println("2. Sign Up");
@@ -37,29 +38,27 @@ public class App {
             System.out.println("7. Exit");
             System.out.print("Enter your option: ");
             option = scanner.nextInt();
+            scanner.nextLine();
             switch(option)
             {
                 case 1:
                     // Handle login
                     System.out.print("Enter username to login: ");
-                    String loginUsername = scanner.next();
+                    String loginUsername = scanner.nextLine();
                     System.out.print("Enter password to sign up: ");
-                    String loginPassword = scanner.next();
-                    User loginUser = new User(loginUsername, loginPassword, userServiceutil.hashPassword(loginPassword), new ArrayList<>(), UUID.randomUUID().toString());
-                    try
-                    {
-                        userBookingService = new UserBookingService(loginUser);
-                    }
-                    catch(Exception e)
-                    {
-                        System.out.println("Error loading user data: " + e.getMessage());
-                        return;
-                    }
-                    Boolean loginSuccess = userBookingService.loginUser();
-                    if(loginSuccess)
+                    String loginPassword = scanner.nextLine();
+                    loginUser = userBookingService.loginUser(loginUsername, loginPassword);
+                    if(loginUser!=null)
                     {
                         System.out.println("Login successful!");
-
+                        try{
+                            userBookingService = new UserBookingService(loginUser);
+                        }
+                        catch(IOException e)
+                        {
+                            System.out.println("Error loading user data: " + e.getMessage());
+                            return;
+                        }
                     }
                     else
                     {
@@ -69,15 +68,15 @@ public class App {
                 case 2:
                     // Handle sign up
                     System.out.print("Enter username: ");
-                    String username = scanner.next();
+                    String username = scanner.nextLine();
                     System.out.print("Enter password: ");
-                    String password = scanner.next();
+                    String password = scanner.nextLine();
                     User signUpUser = new User(username, password, userServiceutil.hashPassword(password),new ArrayList<>(), UUID.randomUUID().toString());  
                      
                     Boolean signUpSuccess = userBookingService.signUp(signUpUser);
                     if(signUpSuccess)
                     {
-                        System.out.println("Sign up successful!");
+                        System.out.println("Sign up successful! Proceed to login");
                     }
                     else
                     {
@@ -91,7 +90,7 @@ public class App {
                 case 4:
                     // Handle cancel booking
                     System.out.print("Enter ticket ID to cancel: ");
-                    String ticketId = scanner.next();
+                    String ticketId = scanner.nextLine();
                     Boolean cancelSuccess = userBookingService.cancelBooking(ticketId);
                     if(cancelSuccess)
                     {
@@ -105,19 +104,19 @@ public class App {
                 case 5:
                     // Find train 
                     System.out.print("Enter source station: ");
-                    String source = scanner.next();
+                    String source = scanner.nextLine();
                     System.out.print("Enter destination station: ");
-                    String destination = scanner.next();
+                    String destination = scanner.nextLine();
                     userBookingService.findTrain(source, destination);
                     break;
                 case 6:
                     // Book ticket
                     System.out.print("Enter train ID to book: ");
-                    String trainId = scanner.next();
+                    String trainId = scanner.nextLine();
                     System.out.print("Enter source station: ");
-                    String bookSource = scanner.next();
+                    String bookSource = scanner.nextLine();
                     System.out.print("Enter destination station: ");
-                    String bookDestination = scanner.next();
+                    String bookDestination = scanner.nextLine();
                     userBookingService.bookTicket(trainId, bookSource, bookDestination);
                     break;                    
                 case 7:
