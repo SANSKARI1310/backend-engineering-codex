@@ -1,0 +1,14 @@
+A mini_project 
+                    HTTP
+┌──────────────┐              ┌─────────────────┐
+│ HTML/CSS/JS  │ ───────────→ │ Controller      │
+│  Frontend    │ ←─────────── │                 │
+└──────────────┘    JSON      └────────┬────────┘
+                                       │
+                                  Service layer
+                                       │
+                                  Repository
+                                       │
+                                    MySQL
+
+Goal is to practise my backend systems before going into backend with Spring in future.
