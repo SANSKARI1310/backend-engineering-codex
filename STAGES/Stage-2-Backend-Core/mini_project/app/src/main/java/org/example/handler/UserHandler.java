@@ -1,8 +1,7 @@
 package org.example.handler;
-import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import com.sun.net.httpserver.HttpExchange;
 public class UserHandler {
-    
     public static void handle(HttpExchange exchange)throws IOException
     {
         String response ="";
@@ -13,9 +12,10 @@ public class UserHandler {
             statusCode=200;
             response="User";
         }
-        
+
         exchange.sendResponseHeaders(statusCode, response.length());
         exchange.getResponseBody().write(response.getBytes());
         exchange.getResponseBody().close();
-    } 
+    }
 }
+
