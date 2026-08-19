@@ -7,11 +7,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import org.example.handler.TaskHandler;
 import org.example.handler.UserHandler;
+import org.example.repository.TaskRepository;
 
 public class App {
 
     public static void main(String[] args) throws IOException {
 
+        TaskRepository.loadTasks();
         HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
         System.out.println("running sm on server");
         server.createContext("/task", TaskHandler::handle);
