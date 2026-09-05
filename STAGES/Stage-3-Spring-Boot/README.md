@@ -16,3 +16,9 @@ Rate limiting using bucket4js
 Analytics event mapping 
 Asynchronous setup 
 Dockerization
+
+phase 3:
+Introducing kafka
+Learning about consumer / producer nd sub pub designs 
+handling kafka ui 
+kafka listener now instead of event listener 
